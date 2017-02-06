@@ -1,4 +1,7 @@
-var exec = require('cordova/exec');
+// var exec = require('cordova/exec');
+var argscheck = require('cordova/argscheck'),
+    utils = require('cordova/utils'),
+    exec = require('cordova/exec');
 
 var getReaderTypes = function() {
 	if (device.platform == 'Android') {
@@ -55,7 +58,11 @@ Swiper.fireEvent = function (event, data) {
 };
 
 Swiper.on = function (event, callback, scope) {
-	window.addEventListener(event, callback.bind(scope || window));
+	if (event == "swipe_success") {
+        window.addEventListener(event, callback.bind(scope || window), {once: true});
+	} else {
+        window.addEventListener(event, callback.bind(scope || window));
+	}
 };
 
 module.exports = Swiper;
